@@ -32,15 +32,18 @@ class App extends Component {
   getReviews = async () => {
     const reviews = await readAllReviews()
     
+    
     this.setState({
       reviews
       
     })
+
+     
     
   }
   newReview = async (e) => {
     e.preventDefault()
-    const review = await createReview(this.state.reviewForm)
+    const review = await createReview(this.state.reviewForm, this.state.currentUser.id )
     this.setState(prevState => ({
       reviews: [...prevState.reviews, review],
       reviewForm: {
@@ -89,6 +92,7 @@ class App extends Component {
       currentUser: decode(userData.token)
     })
     localStorage.setItem("jwt", userData.token)
+    
   }
   handleRegister = async (e) => {
     e.preventDefault();
@@ -128,7 +132,7 @@ class App extends Component {
             reviewForm: {
               comment: ""
             }
-          })}>Reviews</Link></h1>
+          })}>Home</Link></h1>
           <div>
             {this.state.currentUser
               ?
@@ -170,8 +174,10 @@ class App extends Component {
               newReview={this.newReview} />
           )} />
         <Route
-          path="/reviews/:id"
+        // /users/:user_id/reviews/:id
+          path="/users/:user_id/reviews/:id"
           render={(props) => {
+            // const {user_id} = props.match.params
             const { id } = props.match.params;
             const review = this.state.reviews.find(el => el.id === parseInt(id));
             return <Review
