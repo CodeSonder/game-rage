@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link } from 'react-router-dom'
+import { Route, Link, Switch } from 'react-router-dom'
 import { withRouter } from 'react-router';
 import decode from 'jwt-decode';
 import Reviews from './components/Reviews'
@@ -7,18 +7,21 @@ import Review from './components/Review'
 import ReviewCreate from './components/ReviewCreate'
 import Login from './components/Login'
 import Register from './components/Register'
+import Home from './components/Home'
 import {
   createReview,
   readAllReviews,
   updateReview,
   destroyReview,
   loginUser,
-  registerUser
+  registerUser,
+  // readOneReview
 } from './services/api-helper'
 import './App.css';
 class App extends Component {
   state = {
-    reviews: [],
+    reviews: [],  
+    
     reviewForm: {
       comment: ""
     },
@@ -29,21 +32,71 @@ class App extends Component {
       password: ""
     }
   }
+
+  // -------------- AUTH ------------------
+  
+
+
+  handleLoginButton = () => {
+    this.props.history.push("/login")
+  } 
+  handleLogin = async () => {
+    const userData = await loginUser(this.state.authFormData, this.state.currentUser);
+    
+    this.setState({
+      currentUser: decode(userData.token)
+    })
+    console.log(this.state.currentUser)
+    localStorage.setItem("jwt", userData.token)
+    this.props.history.push('/')
+  }
+  handleRegister = async (e) => {
+    e.preventDefault();
+    await registerUser(this.state.authFormData);
+    this.handleLogin();
+    this.props.history.push('/')
+  }
+  handleLogout = async () => {
+    localStorage.removeItem("jwt");
+    this.setState({
+      currentUser: null
+    })
+  }
+  authHandleChange = async (e) => {
+    const { name, value } = e.target;
+    this.setState(prevState => ({
+      authFormData: {
+        ...prevState.authFormData,
+        [name]: value
+      }
+    }));
+  }
+
+
+
+  //------ CRUD-------------
+  
+  
+  
   getReviews = async () => {
+    
     const reviews = await readAllReviews()
+    
     
     
     this.setState({
       reviews
-      
-    })
-
-     
+    }) 
     
-  }
+    
+  } 
+  
+  
+  
   newReview = async (e) => {
     e.preventDefault()
     const review = await createReview(this.state.reviewForm, this.state.currentUser.id )
+    
     this.setState(prevState => ({
       reviews: [...prevState.reviews, review],
       reviewForm: {
@@ -51,6 +104,7 @@ class App extends Component {
       }
     }))
   }
+  
   editReview = async () => {
     const { reviewForm } = this.state
     await updateReview(reviewForm.id, reviewForm)
@@ -78,66 +132,45 @@ class App extends Component {
     const review = reviews.find(el => el.id === parseInt(id))
     this.setState({
       reviews,
-      reviewForm: review
+     reviewForm: review
     })
   }
 
-  // -------------- AUTH ------------------
-  handleLoginButton = () => {
-    this.props.history.push("/login")
-  }
-  handleLogin = async () => {
-    const userData = await loginUser(this.state.authFormData);
-    this.setState({
-      currentUser: decode(userData.token)
-    })
-    localStorage.setItem("jwt", userData.token)
+  
+ 
+   componentDidMount() {
     
-  }
-  handleRegister = async (e) => {
-    e.preventDefault();
-    await registerUser(this.state.authFormData);
-    this.handleLogin();
-  }
-  handleLogout = async () => {
-    localStorage.removeItem("jwt");
-    this.setState({
-      currentUser: null
-    })
-  }
-  authHandleChange = async (e) => {
-    const { name, value } = e.target;
-    this.setState(prevState => ({
-      authFormData: {
-        ...prevState.authFormData,
-        [name]: value
+     this.getReviews()
+     const checkUser = localStorage.getItem("jwt");
+     if (checkUser) {
+       const user = decode(checkUser);
+       
+       
+       console.log(user)
+       this.setState({
+         currentUser: user
+        })
+        
       }
-    }));
-  }
-  componentDidMount() {
-    this.getReviews()
-    const checkUser = localStorage.getItem("jwt");
-    if (checkUser) {
-      const user = decode(checkUser);
-      this.setState({
-        currentUser: user
-      })
-    }
-  }
+     
+  } 
   render() {
-    return (
-      <div>
-        <header>
-          <h1><Link to='/' onClick={() => this.setState({
-            reviewForm: {
-              comment: ""
-            }
-          })}>Home</Link></h1>
+    
+    return (  
+      <div>   
+        <header className='header-block'>
+          <nav className='nav-link'>
+          <h1><Link to='/'>Home</Link>
+          </h1>
+          
+          <h1><Link to='/reviews/1'>My Note</Link></h1>
+          </nav>
           <div>
             {this.state.currentUser
               ?
               <>
                 <p>{this.state.currentUser.username}</p>
+                
                 <button onClick={this.handleLogout}>Logout</button>
               </>
               :
@@ -145,6 +178,7 @@ class App extends Component {
             }
           </div>
         </header>
+        <Switch>
         <Route exact path="/login" render={() => (
           <Login
             handleLogin={this.handleLogin}
@@ -156,7 +190,7 @@ class App extends Component {
             handleChange={this.authHandleChange}
             formData={this.state.authFormData} />)} />
         <Route
-          exact path="/"
+          exact path="/reviews"
           render={() => (
             <Reviews
               reviews={this.state.reviews}
@@ -174,10 +208,10 @@ class App extends Component {
               newReview={this.newReview} />
           )} />
         <Route
-        // /users/:user_id/reviews/:id
-          path="/users/:user_id/reviews/:id"
+        // /reviews/:id
+          path="/reviews/:id"
           render={(props) => {
-            // const {user_id} = props.match.params
+            
             const { id } = props.match.params;
             const review = this.state.reviews.find(el => el.id === parseInt(id));
             return <Review
@@ -189,7 +223,15 @@ class App extends Component {
               reviewForm={this.state.reviewForm}
               deleteReview={this.deleteReview} />
           }}
+          
+
         />
+        <Route path='/'>
+          <Home/>
+          </Route>
+
+        
+        </Switch>
       </div>
     );
   }

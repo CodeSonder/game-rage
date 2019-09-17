@@ -1,5 +1,6 @@
 import axios from 'axios';
-const baseUrl = 'http://localhost:3000'
+const baseUrl = 'https://game-rage.herokuapp.com'
+
 
 const api = axios.create({
   baseURL: baseUrl
@@ -31,15 +32,6 @@ export const registerUser = (registerData) => {
     .then(resp => resp.json())
 }
 
-// export const verifyUser = async () => {
-//   const token = localStorage.getItem('authToken');
-//   if (token) {
-//     api.defaults.headers.common.authorization = `Bearer ${token}`
-//     const resp = await api.get('/users/verify');
-//     return resp.data
-//   }
-//   return false;
-// }
 
 const createReview = (data, user_id) => {
   const opts = {
@@ -55,15 +47,19 @@ const createReview = (data, user_id) => {
 }
 
 
-const readAllReviews = async (user_id) => {
-  const resp = await api.get(`/users/${user_id}/reviews`)
+const readAllReviews = async () => {
+  const resp = await api.get(`/users/1/reviews`)
+   
+  
   return resp.data
 }
 
-const readOneReview = (id, user_id) => {
-  return fetch(`${baseUrl}/users/${user_id}/reviews/${id}`)
-    .then(resp => resp.json())
-}
+// const readOneReview = async (user_id, id) => {
+//   const resp = await api.get(`/users/${user_id}/reviews/${id}`)
+
+//   return resp.data
+
+// }
 
 const updateReview = (id, data, user_id) => {
   const opts = {
@@ -85,10 +81,12 @@ const destroyReview = (id, user_id) => {
   return fetch(`${baseUrl}/users/${user_id}/reviews/${id}`, opts)
 }
 
+
+
 export {
   createReview,
   readAllReviews,
-  readOneReview,
+  // readOneReview,
   updateReview,
   destroyReview
 }

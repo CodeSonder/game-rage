@@ -8,8 +8,8 @@ const Login = (props) => {
   return (
     <div className="auth-container">
       <h2>login</h2>
-      <hr />
-      <form onSubmit={(e) => {
+      
+      <form className='login-form' onSubmit={(e) => {
         e.preventDefault();
         props.handleLogin();}} >
         <p>Username:</p>

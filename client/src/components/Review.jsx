@@ -27,14 +27,14 @@ class Review extends Component {
             
             <hr/>
             {this.state.isEdit ?
-              <Route path={`/users/:user_id/reviews/:id/edit`} render={() => (
+              <Route path={`/reviews/:id/edit`} render={() => (
                 <ReviewEdit
                   handleFormChange={this.props.handleFormChange}
                   handleSubmit={(e) => {
                     e.preventDefault();
                     this.props.editReview();
                     this.setState({ isEdit: false })
-                    this.props.history.push(`/users/:user_id/reviews/${this.props.reviewForm.id}`)
+                    this.props.history.push(`/reviews/${this.props.reviewForm.id}`)
                   }}
                   reviewForm={this.props.reviewForm} />
               )} />
@@ -44,7 +44,7 @@ class Review extends Component {
                   this.setState({
                     isEdit: true
                   })
-                  this.props.history.push(`/users/:user_id/reviews/${review.id}/edit`)
+                  this.props.history.push(`/reviews/${review.id}/edit`)
                 }}>Edit</button>
                 <button onClick={() => {
                   this.props.deleteReview(review.id);

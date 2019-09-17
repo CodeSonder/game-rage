@@ -16,13 +16,14 @@ function Reviews(props) {
         </div> */}
       {/* ))} */}
       <div
-        className="review-card"
-        onClick={() => props.history.push('/new/review')}>
-        <img
+        className="review-card" 
+        >
+        <img onClick={() => props.history.push('/new/review')} width='75px'
+        height='75px'
           alt="Create a new review"
           src="https://image.flaticon.com/icons/png/512/14/14980.png"
           className="plus-sign" />
-        <h3>Create a new review</h3>
+        <h3>Create a new note</h3>
       </div>
     </div>
   )

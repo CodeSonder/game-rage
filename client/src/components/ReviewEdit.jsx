@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 function ReviewEdit(props) {
   return (
     <div>
-      <h3>Edit Review</h3>
+      <h3>Edit Notef</h3>
       <form onSubmit={props.handleSubmit}>
 
         <p>Comment:</p>
