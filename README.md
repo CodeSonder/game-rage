@@ -1,24 +1,20 @@
-# README
+# Cloud Notes
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Hello and welcome to Cloud Notes, login or register to leave a note
 
 Things you may want to cover:
 
-* Ruby version
+## Ruby version
+ruby 2.6.3
 
-* System dependencies
+## System dependencies
+from the root directory run bundle install, then cd into client directory and run npm install.
 
-* Configuration
+## Database creation
+from the root directory run rails db:create then run db:migrate then after migrate run rails db:seed
 
-* Database creation
 
-* Database initialization
+## How to run the test suite
+ in the root directory run rails server then cd into client and run npm start
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+http://cloud-notes.surge.sh/
