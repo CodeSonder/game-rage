@@ -160,12 +160,12 @@ class App extends Component {
       <div>   
         <header className='header-block'>
           <nav className='nav-link'>
-          <h1><Link to='/'>Home</Link>
+          <h1 className='home-link'><Link to='/'>Home</Link>
           </h1>
           
-          <h1><Link to='/reviews/1'>My Note</Link></h1>
+          <h1 className='note-link'><Link to='/reviews/1'>My Note</Link></h1>
           </nav>
-          <div>
+          <div className='username'>
             {this.state.currentUser
               ?
               <>

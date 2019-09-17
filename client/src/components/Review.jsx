@@ -23,7 +23,7 @@ class Review extends Component {
           <div>
             
             
-            <p>{review.comment}</p>
+            <p className='comment'>{review.comment}</p>
             
             <hr/>
             {this.state.isEdit ?
