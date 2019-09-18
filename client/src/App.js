@@ -20,8 +20,8 @@ import {
 import './App.css';
 class App extends Component {
   state = {
-    reviews: [],  
-    
+    reviews: [],
+
     reviewForm: {
       comment: ""
     },
@@ -34,19 +34,19 @@ class App extends Component {
   }
 
   // -------------- AUTH ------------------
-  
+
 
 
   handleLoginButton = () => {
     this.props.history.push("/login")
-  } 
+  }
   handleLogin = async () => {
     const userData = await loginUser(this.state.authFormData, this.state.currentUser);
-    
+
     this.setState({
       currentUser: decode(userData.token)
     })
-    console.log(this.state.currentUser)
+    
     localStorage.setItem("jwt", userData.token)
     this.props.history.push('/')
   }
@@ -75,36 +75,37 @@ class App extends Component {
 
 
   //------ CRUD-------------
-  
-  
-  
+
+
+
   getReviews = async () => {
-    
+
     const reviews = await readAllReviews()
-    
-    
-    
-    this.setState({
-      reviews
-    }) 
-    
-    
-  } 
-  
-  
-  
+
+
+
+    this.setState({ 
+      reviews 
+    })
+
+
+  }
+
+
+
   newReview = async (e) => {
     e.preventDefault()
-    const review = await createReview(this.state.reviewForm, this.state.currentUser.id )
-    
+    const review = await createReview(this.state.reviewForm, 1)
+
     this.setState(prevState => ({
       reviews: [...prevState.reviews, review],
       reviewForm: {
         comment: ""
       }
     }))
-  }
-  
+   
+  } 
+
   editReview = async () => {
     const { reviewForm } = this.state
     await updateReview(reviewForm.id, reviewForm)
@@ -132,105 +133,113 @@ class App extends Component {
     const review = reviews.find(el => el.id === parseInt(id))
     this.setState({
       reviews,
-     reviewForm: review
+      reviewForm: review
     })
   }
 
-  
- 
-   componentDidMount() {
+
+
+  componentDidMount() {
     
-     this.getReviews()
-     const checkUser = localStorage.getItem("jwt");
+    const checkUser = localStorage.getItem("jwt");
      if (checkUser) {
-       const user = decode(checkUser);
-       
-       
-       console.log(user)
-       this.setState({
-         currentUser: user
-        })
-        
-      }
+      const user = decode(checkUser);
      
-  } 
+      
+      
+      
+      this.setState({
+        currentUser: user,
+        
+      })
+      
+     }}
   render() {
-    
-    return (  
-      <div>   
+     let myRev = this.state.reviews.map(review => {
+      return <Link  to={`/reviews/${review.id}`}><h1 className='notes-list'>{review.comment}</h1></Link>
+    })
+    // console.log(this.state.reviews)
+    return (
+      <div>
         <header className='header-block'>
           <nav className='nav-link'>
-          <h1 className='home-link'><Link to='/'>Home</Link>
-          </h1>
-          
-          <h1 className='note-link'><Link to='/reviews/1'>My Note</Link></h1>
+            <h1 className='link'><Link to='/'>Home</Link>
+            </h1>
+            <h1 className='link'><Link to='/reviews'>Add Note</Link></h1>
+            <h1 className='link'><Link to='/reviews/1'>My Note</Link></h1>
+            
           </nav>
-          <div className='username'>
+          <div >
             {this.state.currentUser
               ?
               <>
-                <p>{this.state.currentUser.username}</p>
-                
-                <button onClick={this.handleLogout}>Logout</button>
+                <p className='username'>{this.state.currentUser.username}</p>
+
+                <button className='logout-button' onClick={this.handleLogout}>Logout</button>
               </>
               :
-              <button onClick={this.handleLoginButton}>Login / Register</button>
+              <button className='login-register-button' onClick={this.handleLoginButton}>Login/Register</button>
             }
           </div>
         </header>
         <Switch>
-        <Route exact path="/login" render={() => (
-          <Login
-            handleLogin={this.handleLogin}
-            handleChange={this.authHandleChange}
-            formData={this.state.authFormData} />)} />
-        <Route exact path="/register" render={() => (
-          <Register
-            handleRegister={this.handleRegister}
-            handleChange={this.authHandleChange}
-            formData={this.state.authFormData} />)} />
-        <Route
-          exact path="/reviews"
-          render={() => (
-            <Reviews
-              reviews={this.state.reviews}
-              reviewForm={this.state.reviewForm}
-              handleFormChange={this.handleFormChange}
-              newReview={this.newReview} />
-          )}
-        />
-        <Route
-          path="/new/review"
-          render={() => (
-            <ReviewCreate
-              handleFormChange={this.handleFormChange}
-              reviewForm={this.state.reviewForm}
-              newReview={this.newReview} />
-          )} />
-        <Route
-        // /reviews/:id
-          path="/reviews/:id"
-          render={(props) => {
-            
-            const { id } = props.match.params;
-            const review = this.state.reviews.find(el => el.id === parseInt(id));
-            return <Review
-              id={id}
-              review={review}
-              handleFormChange={this.handleFormChange}
-              mountEditForm={this.mountEditForm}
-              editReview={this.editReview}
-              reviewForm={this.state.reviewForm}
-              deleteReview={this.deleteReview} />
-          }}
-          
+          <Route exact path="/login" render={() => (
+            <Login
+              handleLogin={this.handleLogin}
+              handleChange={this.authHandleChange}
+              formData={this.state.authFormData} />)} />
+          <Route exact path="/register" render={() => (
+            <Register
+              handleRegister={this.handleRegister}
+              handleChange={this.authHandleChange}
+              formData={this.state.authFormData} />)} />
+          <Route
+            exact path="/reviews"
+            render={() => (
+              <Reviews
+                reviews={this.state.reviews}
+                reviewForm={this.state.reviewForm}
+                handleFormChange={this.handleFormChange}
+                newReview={this.newReview} />
+            )}
+          />
+          <Route
+            path="/new/review"
+            render={() => (
+              <ReviewCreate
+                handleFormChange={this.handleFormChange}
+                reviewForm={this.state.reviewForm}
+                newReview={this.newReview} />
+            )} />
+          <Route
+            // /reviews/:id
+            path="/reviews/:id"
+            render={(props) => {
 
-        />
-        <Route path='/'>
-          <Home/>
+              const { id } = props.match.params;
+              const review = this.state.reviews.find(el => el.id === parseInt(id));
+              return <Review
+                id={id}
+                review={review}
+                handleFormChange={this.handleFormChange}
+                mountEditForm={this.mountEditForm}
+                editReview={this.editReview}
+                reviewForm={this.state.reviewForm}
+                deleteReview={this.deleteReview} />
+            }}
+
+
+          />
+          <Route path='/'>
+            <Home />
+            {myRev}
           </Route>
 
-        
+          {/* <Route exact path='/allnotes'>
+
+            {myRev}
+          </Route> */}
+
         </Switch>
       </div>
     );

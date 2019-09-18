@@ -16,7 +16,7 @@ function Reviews(props) {
         </div> */}
       {/* ))} */}
       <div
-        className="review-card" 
+        className="note-card" 
         >
         <img onClick={() => props.history.push('/new/review')} width='75px'
         height='75px'

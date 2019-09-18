@@ -1,13 +1,13 @@
-.header-block{
+.header-block {
   display: flex;
   justify-content: space-between;
 }
 
-.nav-link{
+.nav-link {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 200px;
+  width: 350px;
 }
 
 .auth-container {
@@ -16,61 +16,95 @@
   flex-direction: column;
   text-align: center;
   color: white;
-  
-  
-} 
+}
 
 body {
-  background-color: slategray
+  background-image: url('https://i.ytimg.com/vi/7JyE47-Ykjo/maxresdefault.jpg')
 }
 
 .home-container {
-  
   text-align: center;
   background-color: black;
   width: 400px;
   margin-left: 50%;
-  margin-top: 15%;
-  transform:translateX(-50%);
+  margin-top: 2%;
+  transform: translateX(-50%);
   animation-name: moveDiv;
   animation-iteration-count: infinite;
-  animation-duration: 4s
-  
+  animation-duration: 4s;
+  border-radius: 20px;
 }
 
 .title {
-  color: white;
-  font-size: 45px;
+  color: black;
+  font-size: 40px;
   font-family: comic sans ms;
 }
 
-.description{
-  color: white;
-  font-size: 20px;
+.description {  
+  color: black;
+  font-size: 15px;
   font-family: Courier New
-
 }
 
 a:link {
   text-decoration: none;
+  
+}
+
+a {
+  color: grey
 }
 
 a:hover {
-  color: black
+  color: slategray
 }
 
 @keyframes moveDiv {
-  0%   {margin-left: 50%; margin-top: 15%; background: black;}
-  25%  {margin-left: 20%; margin-top: 30%; background: slategray;}
-   50%  {margin-left:20%; margin-top: 5%; background: black;}
-   75%  {margin-left: 80%; margin-top: 5%; background: slategrey;}
-  100% {margin-left: 80%; margin-top:30%; background: black;}  
+  0%   {border-radius: 0%; background: grey;}
+  25%  {border-radius: 25%; background: darkgray;}
+   50%  {border-radius: 50%; background: grey;}
+   75%  {border-radius: 25%; background: darkgrey;}
+  100% {border-radius: 0%; background: grey;}  
 }
 
 .username {
   font-size: 25px;
+  color: slategray;
 }
 
 .comment {
-  font-size: 25px;
+  font-size: 40px;
 }
+
+  .notes-list {
+    text-align: center;
+    color: black
+  }
+
+  .notes-list:hover {
+    color: slategray
+  }
+   .note-card {
+     color: slategray
+   }
+
+ .create-form {
+   color: slategray;
+   text-align: center
+ }
+
+ .note-page {
+   color: #afc3cc;
+   text-align: center;
+   
+ }
+
+ .logout-button {
+   background-color: grey;
+   font-size: 15px;
+ }
+ .login-register-button {
+  background-color: grey;
+  font-size: 15px;
+ }

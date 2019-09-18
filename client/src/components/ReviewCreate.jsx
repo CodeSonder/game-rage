@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 function ReviewCreate(props) {
   return (
     <div className="create-form" >
-      <h2>Create a new note</h2>
+      <h2>Create A New Note</h2>
       <form onSubmit={props.newReview}>
 
         <p>Comment:</p>

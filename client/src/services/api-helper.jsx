@@ -1,6 +1,6 @@
 import axios from 'axios';
-const baseUrl = 'https://game-rage.herokuapp.com'
-
+const baseUrl = 'http://localhost:3000'
+// https://game-rage.herokuapp.com
 
 const api = axios.create({
   baseURL: baseUrl
@@ -48,10 +48,12 @@ const createReview = (data, user_id) => {
 
 
 const readAllReviews = async () => {
+  
+  
   const resp = await api.get(`/users/1/reviews`)
    
   
-  return resp.data
+  return resp.data  
 }
 
 // const readOneReview = async (user_id, id) => {

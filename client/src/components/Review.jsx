@@ -18,7 +18,7 @@ class Review extends Component {
   render() {
     const { review } = this.props;
     return (
-      <div className="review-page">
+      <div className="note-page">
         {review === undefined ? <h2>Loading . . .</h2> : (
           <div>
             
