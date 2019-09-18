@@ -17,4 +17,4 @@ from the root directory run rails db:create then run db:migrate then after migra
 ## How to run the test suite
  in the root directory run rails server then cd into client and run npm start
 
-http://cloud-notes.surge.sh/
+http://notes-cloud.surge.sh/
